@@ -1,0 +1,14 @@
+<div class="nav_menu">
+    <a class="logo">LOGO</a>
+    <nav class="nav_menu">
+        <ul class="top_menu">
+            {% for item in top_menu %}
+                <li><a href="{% url item.href  %}"
+                       class="{% if request.resolver_match.url_name == item.href %}active{% endif %}">{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+    <div class="lk">
+        <a href="#">Личный кабинет</a>
+    </div>
+</div>
