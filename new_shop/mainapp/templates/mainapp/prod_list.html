@@ -1,0 +1,18 @@
+{% extends 'mainapp/base.html' %}
+
+{% block title %}
+     <title>{{ title|capfirst }}</title>
+{% endblock %}
+
+{% block content %}
+    {% include 'mainapp/include/category_menu.html' %}
+    <div class="prod_list">
+        {% for item in object_list %}
+            <div class="product_item">
+                <div class="product_item_img">
+                     <img src="{{ item.img.url }}" alt="">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1125,3 +1125,10 @@ td:first-child {
 .related-products a:hover .text{
 	display: block;
 }
+
+.prod_list {
+	display: flex;
+	max-width: 100%;
+	justify-content: space-between;
+	margin-top: 50px;
+}

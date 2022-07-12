@@ -37,18 +37,26 @@ class MainProduct(DataPageMixin, ListView):
         category = Category.objects.all()
         hot_prod = self.get_hot_product()
         same_prod = Product.objects.filter(category=hot_prod.category)
-        mix_content = self.get_context(title='Товары', category=category, hot_prod=hot_prod, same_prod=same_prod)
+        mix_content = self.get_context(title='Товары', categorys=category, hot_prod=hot_prod, same_prod=same_prod)
         return dict(list(context.items()) + list(mix_content.items()))
 
     def get_hot_product(self):
         hot_prod = choice(Product.objects.all())
         return hot_prod
 
-# def main_products(request):
-#     context = {'top_main_menu': top_main_menu}
-#
-#     return render(request, 'mainapp/products.html', context=context)
 
+class CategoryProductsList(DataPageMixin, ListView):
+    model = Product
+    template_name = 'mainapp/prod_list.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categorys = Category.objects.all()
+        mix_content = self.get_context(title=f'*', categorys=categorys)
+        return dict(list(context.items()) + list(mix_content.items()))
+
+    def get_queryset(self):
+        return Product.objects.filter(category__slug=self.kwargs['category_slug'])
 
 def contacts(request):
     context = {'top_main_menu': top_main_menu}
