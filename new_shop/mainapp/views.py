@@ -5,11 +5,11 @@ from django.views.generic import *
 from mainapp.models import *
 from mainapp.utils import DataPageMixin
 
-top_main_menu = [
-    {'name': 'Главная', 'href': 'home'},
-    {'name': 'Продукты', 'href': 'prod_page'},
-    {'name': 'Контакты', 'href': 'contacts'},
-]
+# top_main_menu = [
+#     {'name': 'Главная', 'href': 'home'},
+#     {'name': 'Продукты', 'href': 'prod_page'},
+#     {'name': 'Контакты', 'href': 'contacts'},
+# ]
 
 category_menu = [
     {'name': 'Диваны', 'href': 'sofas'},
@@ -17,6 +17,7 @@ category_menu = [
     {'name': 'Кресла', 'href': 'armchairs'},
     {'name': 'Стулья', 'href': 'chairs'},
 ]
+
 
 class HomePage(DataPageMixin, ListView):
     model = Product
@@ -52,11 +53,15 @@ class CategoryProductsList(DataPageMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         categorys = Category.objects.all()
-        mix_content = self.get_context(title=f'*', categorys=categorys)
+        title = Category.objects.filter(slug=self.kwargs['category_slug']).first()
+        mix_content = self.get_context(title=title, categorys=categorys)
         return dict(list(context.items()) + list(mix_content.items()))
 
     def get_queryset(self):
-        return Product.objects.filter(category__slug=self.kwargs['category_slug'])
+        if self.kwargs['category_slug'] == 'all':
+            return Product.objects.all().order_by('price')
+        return Product.objects.filter(category__slug=self.kwargs['category_slug']).order_by('price')
+
 
 def contacts(request):
     context = {'top_main_menu': top_main_menu}
