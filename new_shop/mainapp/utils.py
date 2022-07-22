@@ -8,5 +8,5 @@ top_main_menu = [
 class DataPageMixin:
     def get_context(self, **kwargs):
         context = kwargs
-        context['top_menu'] = top_main_menu
+        # context['top_menu'] = top_main_menu
         return context

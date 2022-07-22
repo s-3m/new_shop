@@ -1,14 +1,32 @@
+{% load main_tags %}
 <div class="nav_menu">
-    <a class="logo">LOGO</a>
+    <a href="/" class="logo">LOGO</a>
     <nav class="nav_menu">
         <ul class="top_menu">
-            {% for item in top_menu %}
-                <li><a href="{% url item.href  %}"
+            {% top_menu as top_menu_list %}
+            {% for item in top_menu_list %}
+                <li><a href="{% url item.href %}"
                        class="{% if request.resolver_match.url_name == item.href %}active{% endif %}">{{ item.name }}</a></li>
             {% endfor %}
         </ul>
     </nav>
-    <div class="lk">
-        <a href="#">Личный кабинет</a>
+{#    <div class="lk">#}
+        <nav class="lk">
+            {% if user.is_authenticated %}
+                <ul class="down_menu_list">
+                    <li class="down_menu_links"><a href="#">{{ user }}</a><i class="fa-solid fa-angle-right"></i>
+                        <ul class="sub_menu_list">
+                            <li class="sub_menu_links">Личный кабинет</li>
+                            <li class="sub_menu_links"><a href="{% url 'account_logout' %}">Выход</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {% else %}
+                <a href="{% url "account_login" %}">Вход</a>
+            {% endif %}
+        <div class="cart">
+            <a href="#"><i class="fa-solid fa-cart-arrow-down fa-2xl"></i></a>
+        </div>
+        </nav>
     </div>
-</div>
+{#</div>#}
